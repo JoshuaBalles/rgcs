@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #3e4c2d;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background-color: #a9cc78;
+        }
+
+        /* Content Styles */
+        .content {
+            margin-left: 250px; /* Equal to sidebar width */
+            padding: 20px;
+            background-color: #bce587;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="sidebar-link">Dashboard</a>
+        <a href="#" class="sidebar-link">Appointments</a>
+        <a href="#" class="sidebar-link">Services</a>
+        <a href="#" class="sidebar-link">Schedules</a>
+        <a href="/" class="sidebar-link" style="position: absolute; bottom: 20px; width: 100%; text-align: center;">Logout</a>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content">
+        <h1>Dashboard</h1>
+        <p>Welcome to your dashboard. Navigate through different sections using the sidebar links.</p>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
