@@ -1,78 +1,183 @@
+<!-- templates/signup.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Custom styles similar to login.html */
-        .background-image {
-            background: url('../static/assets/sample-background.jpg') no-repeat center center;
-            background-size: cover;
-            height: 100vh;
-        }
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<title>Sign Up</title>
+		<!-- Bootstrap CSS -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+			integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+			crossorigin="anonymous" />
+		<style>
+			.background-image {
+				background: url("../static/assets/login_bg.jpg") no-repeat center center;
+				background-size: cover;
+				height: 100vh;
+			}
 
-        .form-background {
-            background-color: #a9cc78;
-        }
+			.form-background {
+				background-color: #d0e0de;
+				border-radius: 20px;
+				padding: 20px;
+				box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+			}
 
-        .full-width {
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Left container with logo and background -->
-            <div class="col-md-6 d-flex justify-content-center align-items-center background-image">
-                <img src="../static/assets/sample-logo.svg" alt="Company Logo" style="max-width: 400px; max-height: 400px;">
-            </div>
-            <!-- Right container with signup form -->
-            <div class="col-md-6 d-flex align-items-center form-background">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 mx-auto">
-                            <h2 class="text-center mb-4">Sign Up</h2>
-                            <!-- Sign Up Form -->
-                            <form action="/signup" method="post"> <!-- Specify form action and method -->
-                                <div class="form-group">
-                                    <label for="signup-first-name">First Name</label>
-                                    <input type="text" class="form-control" id="signup-first-name" name="first_name" placeholder="First Name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="signup-last-name">Last Name</label>
-                                    <input type="text" class="form-control" id="signup-last-name" name="last_name" placeholder="Last Name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="signup-email">Email</label>
-                                    <input type="email" class="form-control" id="signup-email" name="email" placeholder="Email" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="signup-password">Password</label>
-                                    <input type="password" class="form-control" id="signup-password" name="password" placeholder="Password" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="signup-confirm-password">Confirm Password</label>
-                                    <input type="password" class="form-control" id="signup-confirm-password" name="confirm_password" placeholder="Confirm Password" required>
-                                </div>
-                                <!-- Register Button -->
-                                <button type="submit" class="btn btn-primary full-width">Register</button>
-                                <!-- Return to Login Page -->
-                                <a href="/" class="btn btn-secondary full-width mt-2">Return to Login</a>
-                            </form>
-                        </div>
-                    </div>
-                </div>   
-            </div>
-        </div>
-    </div>
+			.full-width {
+				width: 100%;
+			}
 
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+			.logo {
+				max-width: 200px;
+				max-height: 200px;
+				margin-bottom: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row background-image">
+				<div class="col-md-6 mx-auto d-flex align-items-center">
+					<div class="container form-background">
+						<div class="d-flex justify-content-center">
+							<img
+								src="../static/assets/logo.png"
+								alt="Company Logo"
+								class="logo" />
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 mx-auto">
+								<!-- Flash messages -->
+								{% with messages = get_flashed_messages() %} {% if messages %}
+								<div
+									class="alert alert-danger"
+									role="alert">
+									{% for message in messages %} {{ message }} {% endfor %}
+								</div>
+								{% endif %} {% endwith %}
+
+								<form
+									action="/signup"
+									method="post"
+									onsubmit="return validatePassword()">
+									<div class="mb-3">
+										<label
+											for="signup-firstname"
+											class="form-label"
+											>First Name</label
+										>
+										<input
+											type="text"
+											class="form-control"
+											id="signup-firstname"
+											name="firstname"
+											placeholder="Enter First Name"
+											required />
+									</div>
+									<div class="mb-3">
+										<label
+											for="signup-lastname"
+											class="form-label"
+											>Last Name</label
+										>
+										<input
+											type="text"
+											class="form-control"
+											id="signup-lastname"
+											name="lastname"
+											placeholder="Enter Last Name"
+											required />
+									</div>
+									<div class="mb-3">
+										<label
+											for="signup-email"
+											class="form-label"
+											>Email</label
+										>
+										<input
+											type="email"
+											class="form-control"
+											id="signup-email"
+											name="email"
+											placeholder="Enter Email"
+											required />
+									</div>
+									<div class="mb-3">
+										<label
+											for="signup-password"
+											class="form-label"
+											>Password</label
+										>
+										<input
+											type="password"
+											class="form-control"
+											id="signup-password"
+											name="password"
+											placeholder="Enter Password"
+											required />
+									</div>
+									<div class="mb-3">
+										<label
+											for="signup-confirmpassword"
+											class="form-label"
+											>Confirm Password</label
+										>
+										<input
+											type="password"
+											class="form-control"
+											id="signup-confirmpassword"
+											name="confirmpassword"
+											placeholder="Confirm Password"
+											required />
+										<div
+											id="password-error"
+											class="invalid-feedback"
+											style="display: none">
+											Passwords do not match.
+										</div>
+									</div>
+									<button
+										type="submit"
+										class="btn btn-primary full-width">
+										Sign Up
+									</button>
+								</form>
+								<div class="mt-3 d-flex justify-content-center">
+									<a
+										href="/"
+										class="btn btn-link"
+										>Already have an account?</a
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			function validatePassword() {
+				var password = document.getElementById("signup-password").value;
+				var confirmPassword = document.getElementById("signup-confirmpassword").value;
+
+				if (password != confirmPassword) {
+					document.getElementById("password-error").style.display = "block";
+					return false;
+				}
+				return true;
+			}
+		</script>
+
+		<!-- Bootstrap JS Bundle -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+			crossorigin="anonymous"></script>
+	</body>
 </html>
