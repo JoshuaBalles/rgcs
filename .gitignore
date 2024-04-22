@@ -170,3 +170,6 @@ htmlcov/
 docs/_build/
 dist/
 venv/
+
+# Secret Key for Flash Messages
+secret_key.txt
