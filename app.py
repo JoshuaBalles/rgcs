@@ -1,11 +1,8 @@
 # app.py (do not change/remove this comment)
 
 import os.path
-import sys
 import logging
 from flask import Flask, render_template, request, flash, redirect, url_for
-
-# from flask_sqlalchemy import SQLAlchemy
 from models import db, User
 
 # Set up logging
@@ -14,30 +11,12 @@ logging.basicConfig(
 )
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///user.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
-if not os.path.exists("secret_key.txt"):
-    logging.error("Secret key found. Run config.py first.")
-    sys.exit()
-else:
-    logging.info("Secret key and databases loaded successfully.")
+app.secret_key = os.environ.get("SECRET_KEY") #os.environ["SECRET_KEY"]
 
-
-# Function to load the secret key from file
-def load_secret_key_from_file(filename):
-    with open(filename, "r") as f:
-        secret_key = f.read().strip()
-    return secret_key
-
-
-# Load the secret key from the generated file
-SECRET_KEY_FILE = "secret_key.txt"
-app.secret_key = load_secret_key_from_file(SECRET_KEY_FILE)
-
-
-# Function to insert user into database
 def insert_user(firstname, lastname, email, password):
     existing_user = User.query.filter_by(email=email.lower()).first()
     if existing_user:
@@ -50,8 +29,6 @@ def insert_user(firstname, lastname, email, password):
     db.session.add(new_user)
     db.session.commit()
 
-
-# Function to authenticate user
 def authenticate_user(email, password):
     user = User.query.filter_by(email=email.lower()).first()
     if user and user.password == password:
