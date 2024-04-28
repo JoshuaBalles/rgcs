@@ -3,6 +3,7 @@
 import os.path
 import logging
 from flask import Flask, render_template, request, flash, redirect, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, User
 
 # Set up logging
@@ -24,8 +25,12 @@ def insert_user(firstname, lastname, email, password):
         flash("Email already exists. Please use a different email.")
         return
 
+    password_hash = generate_password_hash(password)
     new_user = User(
-        firstname=firstname, lastname=lastname, email=email.lower(), password=password
+        firstname=firstname,
+        lastname=lastname,
+        email=email.lower(),
+        password=password_hash,
     )
     db.session.add(new_user)
     db.session.commit()
@@ -33,7 +38,7 @@ def insert_user(firstname, lastname, email, password):
 
 def authenticate_user(email, password):
     user = User.query.filter_by(email=email.lower()).first()
-    if user and user.password == password:
+    if user and check_password_hash(user.password, password):
         return user
     else:
         return None
