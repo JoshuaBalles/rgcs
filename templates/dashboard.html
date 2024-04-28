@@ -4,9 +4,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Dashboard</title>
 		<!-- CDNs. Do not remove any -->
 		<link
@@ -14,10 +12,6 @@
 			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
 			integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
 			crossorigin="anonymous" />
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-			crossorigin="anonymous"></script>
 		<link
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css"
@@ -30,158 +24,121 @@
 			crossorigin="anonymous" />
 	</head>
 
-	<!-- Embedded CSS Styles -->
-	<style>
-		.top-bar {
-			background-color: #42aec5;
-			color: #000;
-			padding: 0.625rem 0;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex-direction: column;
-			box-sizing: border-box;
-		}
-
-		.top-bar-content {
-			width: 100%;
-			max-width: 75rem;
-			display: flex;
-			justify-content: space-around;
-			align-items: center;
-			padding: 0 1.25rem;
-		}
-
-		.company-info {
-			display: flex;
-			align-items: center;
-			font-family: Arial, sans-serif;
-		}
-
-		.company-logo {
-			width: 3.75rem;
-			height: auto;
-			margin-right: 0.625rem;
-		}
-
-		.company-name {
-			font-size: 1.25rem;
-			font-weight: bold;
-		}
-
-		.service-info {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			margin-left: 1.25rem;
-		}
-
-		.service-info div {
-			margin: 0.125rem 0;
-		}
-
-		.nav-bar {
-			background-color: #bfffff;
-			padding: 0.625rem 0;
-			display: flex;
-			justify-content: center;
-			box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1); /* 0 2px 4px rgba(0, 0, 0, 0.1) */
-			width: 100%;
-		}
-
-		.nav-bar-btn {
-			color: #000;
-			text-decoration: none;
-			padding: 0.5rem 1rem; /* 8px 16px */
-			margin: 0 0.625rem; /* 0 10px */
-			border-radius: 0.3125rem; /* 5px */
-			font-size: 0.9375rem; /* 15px */
-			font-family: Arial, sans-serif;
-			transition: background-color 0.3s ease;
-		}
-
-		.nav-bar-btn:hover {
-			background-color: #2ecce6;
-		}
-
-		@media (max-width: 48rem) {
-			/* 768px */
-			.top-bar,
-			.nav-bar {
-				flex-direction: column;
-				align-items: center;
-				padding: 0.625rem 0;
-			}
-
-			.company-logo,
-			.company-name,
-			.service-info div,
-			.nav-bar-btn {
-				margin-bottom: 0.625rem;
-			}
-
-			.nav-bar-btn {
-				display: block;
-				width: 100%;
-				text-align: center;
-			}
-
-			.top-bar-content,
-			.nav-bar {
-				padding: 0;
-			}
-
-			.top-bar > div:first-child,
-			.nav-bar > a {
-				margin-bottom: 0;
-			}
-		}
-	</style>
 	<body>
-		<!-- Top Bar -->
-		<div class="top-bar">
-			<div class="top-bar-content">
-				<div class="company-info">
-					<img
-						src="../static/assets/logo.png"
-						alt="Company Logo"
-						class="company-logo" />
-					<span class="company-name">Mrs. Tidy</span>
-				</div>
-				<div class="service-info">
-					<div><i class="bi bi-geo-alt-fill"></i> 17/F Highstreet South Corp. Plaza Tower 2, BGC</div>
-					<div><i class="bi bi-clock-fill"></i> Monday – Sunday: 9:00 AM - 5:00 PM</div>
+		<!-- Navbar 1-->
+		<nav class="navbar" style="background-color: #42aec5">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="col d-flex justify-content-center align-items-center">
+						<img src="static/assets/brand.png" alt="Logo" class="d-inline-block align-middle" style="max-width: 45%; height: auto" />
+					</div>
+					<div class="col d-flex justify-content-center">
+						<strong style="font-size: 1.5rem">Good Evening User!</strong>
+					</div>
+					<div class="col text-center d-none d-md-block">
+						<p class="mb-0">17/F Highstreet South Corp. Plaza Tower 2, BGC</p>
+						<p class="mb-0">Monday – Sunday: 9:00 AM - 5:00 PM</p>
+					</div>
 				</div>
 			</div>
-		</div>
+		</nav>
 
-		<!-- Navigation Bar -->
-		<div class="nav-bar">
-			<a
-				href="{{ url_for('dashboard') }}"
-				class="nav-bar-btn"
-				>Dashboard</a
-			>
-			<a
-				href="#"
-				class="nav-bar-btn"
-				>Appointments</a
-			>
-			<a
-				href="#"
-				class="nav-bar-btn"
-				>Services</a
-			>
-			<a
-				href="#"
-				class="nav-bar-btn"
-				>Schedules</a
-			>
-			<a
-				href="/"
-				class="nav-bar-btn"
-				>Logout</a
-			>
-		</div>
+		<!-- Navbar 2-->
+		<nav class="navbar" style="background-color: #bfffff">
+			<div class="container-fluid">
+				<!-- Dropdown for smaller screens -->
+				<div class="row d-flex d-md-none justify-content-end">
+					<div class="col-12 d-flex justify-content-end">
+						<div class="dropdown">
+							<button
+								class="btn dropdown-toggle"
+								type="button"
+								id="dropdownMenuButton"
+								data-bs-toggle="dropdown"
+								aria-expanded="false"
+								style="background-color: transparent; border: none; color: inherit">
+								Menu
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<li>
+									<a class="dropdown-item" href="#">Home</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="#">Service</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="#">Appointments</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="#">Reviews</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="/">Logout</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- Normal view for medium screens and up -->
+				<div class="row d-none d-md-flex" style="flex: 1">
+					<div class="col d-flex justify-content-center" style="flex: 1">
+						<button
+							class="btn"
+							onclick="location.href='#';"
+							style="background-color: transparent; border: none; color: inherit; box-shadow: none"
+							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
+							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
+							Home
+						</button>
+					</div>
+					<div class="col d-flex justify-content-center" style="flex: 1">
+						<button
+							class="btn"
+							onclick="location.href='#';"
+							remstyle="background-color: transparent; border: none; color: inherit; box-shadow: none;"
+							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
+							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
+							Service
+						</button>
+					</div>
+					<div class="col d-flex justify-content-center" style="flex: 1">
+						<button
+							class="btn"
+							onclick="location.href='#';"
+							remstyle="background-color: transparent; border: none; color: inherit; box-shadow: none;"
+							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
+							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
+							Appointments
+						</button>
+					</div>
+					<div class="col d-flex justify-content-center" style="flex: 1">
+						<button
+							class="btn"
+							onclick="location.href='#';"
+							remstyle="background-color: transparent; border: none; color: inherit; box-shadow: none;"
+							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
+							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
+							Reviews
+						</button>
+					</div>
+					<div class="col d-flex justify-content-center" style="flex: 1">
+						<button
+							class="btn"
+							onclick="location.href='/';"
+							remstyle="background-color: transparent; border: none; color: inherit; box-shadow: none;"
+							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
+							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
+							Logout
+						</button>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Bootstrap JavaScript Bundle CDN. Do not remove. -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+			crossorigin="anonymous"></script>
 	</body>
 </html>
