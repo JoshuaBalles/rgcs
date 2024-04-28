@@ -57,7 +57,7 @@ def login():
     password = request.form["password"]
     user = authenticate_user(email, password)
     if user:
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("home"))
     else:
         flash("Invalid email or password. Please try again.")
         return redirect(url_for("index"))
@@ -84,9 +84,9 @@ def forgotpassword():
     return render_template("forgotpassword.html")
 
 
-@app.route("/dashboard")
-def dashboard():
-    return render_template("dashboard.html")
+@app.route("/home")
+def home():
+    return render_template("home.html")
 
 
 if __name__ == "__main__":
