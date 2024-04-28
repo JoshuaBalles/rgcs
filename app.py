@@ -15,7 +15,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
-app.secret_key = os.environ.get("SECRET_KEY") #os.environ["SECRET_KEY"]
+app.secret_key = os.environ.get("SECRET_KEY")
+
 
 def insert_user(firstname, lastname, email, password):
     existing_user = User.query.filter_by(email=email.lower()).first()
@@ -29,12 +30,20 @@ def insert_user(firstname, lastname, email, password):
     db.session.add(new_user)
     db.session.commit()
 
+
 def authenticate_user(email, password):
     user = User.query.filter_by(email=email.lower()).first()
     if user and user.password == password:
         return user
     else:
         return None
+
+
+def validate_password(password, confirmpassword):
+    if password != confirmpassword:
+        flash("Passwords do not match. Please try again.", category="error")
+        return False
+    return True
 
 
 @app.route("/")
@@ -63,17 +72,17 @@ def signup():
         password = request.form["password"]
         confirmpassword = request.form["confirmpassword"]
 
-        if password != confirmpassword:
-            flash("Passwords do not match. Please try again.")
-        else:
+        if validate_password(password, confirmpassword):
             insert_user(firstname, lastname, email, password)
             return redirect(url_for("index"))
 
     return render_template("signup.html")
 
+
 @app.route("/forgotpassword")
 def forgotpassword():
     return render_template("forgotpassword.html")
+
 
 @app.route("/dashboard")
 def dashboard():
