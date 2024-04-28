@@ -4,6 +4,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="static\assets\logo.ico" type="image/x-icon" />
 		<title>Sign Up</title>
 		<!-- CDNs. Do not remove any -->
 		<link
@@ -85,7 +86,14 @@
 											required />
 										<div id="password-error" class="invalid-feedback" style="display: none">Passwords do not match.</div>
 									</div>
-									<button type="submit" class="btn btn-primary" style="width: 100%">Sign Up</button>
+									<button
+										type="submit"
+										class="btn w-100"
+										style="background-color: #07c1e2"
+										onmouseover="this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
+										onmouseout="this.style.boxShadow='none';">
+										<strong>Sign Up</strong>
+									</button>
 								</form>
 								<div class="mt-3 d-flex justify-content-center">
 									<a href="/" class="btn btn-link" style="text-decoration: none">Already have an account?</a>
