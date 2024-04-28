@@ -34,9 +34,19 @@
 						</div>
 						<div class="row">
 							<div class="col-md-6 mx-auto">
-								{% with messages = get_flashed_messages() %} {% if messages %}
-								<div class="alert alert-danger" role="alert">{{ messages[0] }}</div>
-								{% endif %} {% endwith %}
+								<!-- Flash message -->
+								{% with messages = get_flashed_messages(with_categories=True) %} {% if messages %} {% for category, message in messages %} {% if
+								category == "error" %}
+								<div class="alert alert-danger alter-dismissible fade show text-center" role="alert">
+									{{ message }}
+									<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+								</div>
+								{% else %}
+								<div class="alert alert-success alter-dismissible fade show text-center" role="alert">
+									{{ message }}
+									<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+								</div>
+								{% endif %} {% endfor %} {% endif %} {% endwith %}
 								<form action="/login" method="post">
 									<div class="mb-3">
 										<label for="login-email" class="form-label">Email</label>

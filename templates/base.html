@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" href="static\assets\logo.ico" type="image/x-icon" />
+		<link rel="icon" href="static\assets\logo.ico" type="image/x-icon" />
 		<title>{% block title %}Base{% endblock %}</title>
 		<!-- CDNs. Do not remove any -->
 		<link
@@ -34,7 +34,7 @@
 						<img src="static/assets/brand.png" alt="Logo" class="d-inline-block align-middle" style="max-width: 45%; height: auto" />
 					</div>
 					<div class="col d-flex justify-content-center">
-						<strong style="font-size: 1.5rem">Hello User!</strong>
+						<strong style="font-size: 1.5rem">Hello {{ current_user.firstname }}!</strong>
 					</div>
 					<div class="col text-center d-none d-md-block">
 						<p class="mb-0">17/F Highstreet South Corp. Plaza Tower 2, BGC</p>
@@ -74,7 +74,7 @@
 									<a class="dropdown-item" href="/reviews">Reviews</a>
 								</li>
 								<li>
-									<a class="dropdown-item" href="/">Logout</a>
+									<a class="dropdown-item" href="/logout">Logout</a>
 								</li>
 							</ul>
 						</div>
@@ -125,7 +125,7 @@
 					<div class="col d-flex justify-content-center" style="flex: 1">
 						<button
 							class="btn"
-							onclick="location.href='/';"
+							onclick="location.href='/logout';"
 							style="background-color: transparent; border: none; color: inherit; box-shadow: none"
 							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
 							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
