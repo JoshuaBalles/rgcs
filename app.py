@@ -38,6 +38,13 @@ login_manager.init_app(app)
 login_manager.session_protection = "strong"
 login_manager.login_view = "index"
 
+# Unauthorized handler
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    flash("Please login first!", category="error")
+    return redirect(url_for('index'))
+
+
 
 @login_manager.user_loader
 def load_user(user_id):
