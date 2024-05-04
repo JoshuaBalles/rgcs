@@ -1,0 +1,53 @@
+<!-- templates/bookings.html (do not remove this comment)-->
+{% extends 'base.html' %} {% block title %}Mrs. Tidy - Bookings{% endblock %} {% block content %}
+
+<div class="container-fluid" style="background-image: url('../static/assets/sponge.jpg'); background-size: cover; background-position: center; padding: 10rem">
+	<div class="d-flex justify-content-center align-items-center" style="height: 100%">
+		<div class="bg-white p-4" style="border-radius: 1rem; opacity: 0.75; box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)">
+			<h1 class="text-center">Your Bookings</h1>
+		</div>
+	</div>
+</div>
+
+<div class="container mt-5">
+	{% if bookings and bookings|length > 0 %}
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th class="text-end">Full Name</th>
+					<th class="text-end">Mobile Number</th>
+					<th class="text-end">Street Address</th>
+					<th class="text-end">City</th>
+					<th class="text-end">Room Size</th>
+					<th class="text-end">Type of Service</th>
+					<th class="text-end">Additional Services</th>
+					<th class="text-end">Selected Date</th>
+					<th class="text-end">Selected Time</th>
+					<th class="text-end">Confirmed</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for booking in bookings %}
+				<tr>
+					<td class="text-end">{{ booking.full_name }}</td>
+					<td class="text-end">{{ booking.mobile_number }}</td>
+					<td class="text-end">{{ booking.street_address }}</td>
+					<td class="text-end">{{ booking.city }}</td>
+					<td class="text-end">{{ booking.room_size }}</td>
+					<td class="text-end">{{ booking.type_of_service }}</td>
+					<td class="text-end">{{ booking.addl_services if booking.addl_services else "None" }}</td>
+					<td class="text-end">{{ booking.selected_date }}</td>
+					<td class="text-end">{{ booking.selected_time }}</td>
+					<td class="text-end" style="color: {% if booking.confirmed %}green{% else %}red{% endif %}">{{ "Yes" if booking.confirmed else "No" }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% else %}
+	<h1 class="text-center" style="margin-bottom: 3rem">No bookings available.</h1>
+	{% endif %}
+</div>
+
+{% endblock %}
