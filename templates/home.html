@@ -1,10 +1,384 @@
-<!-- templates/home.html -->
+<!-- templates/home.html (do not remove this comment)-->
+{% extends 'base.html' %} {% block title %}Mrs. Tidy - Home{% endblock %} {% block content %}
 
-{% extends 'base.html' %}
+<!-- Flash message -->
+{% with messages = get_flashed_messages(with_categories=True) %} {% if messages %} {% for category, message in messages %} {% if category == "error" %}
+<div class="alert alert-danger alter-dismissible fade show text-center" role="alert">
+	{{ message }}
+	<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissible fade show text-center" role="alert">
+	{{ message }}
+	<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endif %} {% endfor %} {% endif %} {% endwith %}
 
-{% block title %}Home{% endblock %}
+<div class="container-fluid" style="background-image: url('../static/assets/sponge.jpg'); background-size: cover; background-position: center; padding: 10rem">
+	<div class="d-flex justify-content-center align-items-center" style="height: 100%">
+		<div class="bg-white p-4" style="border-radius: 1rem; opacity: 0.75; box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)">
+			<h1 class="text-center">Welcome to our Cleaning Service, {{ current_user.firstname }}!</h1>
+		</div>
+	</div>
+</div>
 
-{% block content %}
-    <!-- home-specific content here -->
-    <h1>Home Page</h1>
+<!-- Benefits container -->
+<div class="container">
+	<h1 class="text-center" style="margin-top: 2rem">
+		<strong><em>Benefits of a Clean Home!</em></strong>
+	</h1>
+	<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+		<div class="col">
+			<div class="d-flex flex-column align-items-center">
+				<div
+					class="icon-container"
+					style="width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center"
+					onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)';"
+					onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';"
+					data-bs-toggle="collapse"
+					href="#collapse-house-medical"
+					role="button"
+					aria-expanded="false"
+					aria-controls="collapse-house-medical">
+					<i class="fa-solid fa-house-medical" style="font-size: 3rem"></i>
+				</div>
+				<div class="title fw-bold">Maintain Physical Health</div>
+				<div class="collapse" id="collapse-house-medical">
+					<div class="description" style="text-align: justify">
+						A clean home reduces the risk of illness by minimizing exposure to harmful germs and bacteria.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="d-flex flex-column align-items-center">
+				<div
+					class="icon-container"
+					style="width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center"
+					onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)';"
+					onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';"
+					data-bs-toggle="collapse"
+					href="#collapse-person-rays"
+					role="button"
+					aria-expanded="false"
+					aria-controls="collapse-person-rays">
+					<i class="fa-solid fa-person-rays" style="font-size: 3rem"></i>
+				</div>
+				<div class="title fw-bold">Improve Mental Health</div>
+				<div class="collapse" id="collapse-person-rays">
+					<div class="description" style="text-align: justify">
+						A clutter-free environment promotes relaxation and reduces stress, contributing to better mental well-being.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="d-flex flex-column align-items-center">
+				<div
+					class="icon-container"
+					style="width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center"
+					onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)';"
+					onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';"
+					data-bs-toggle="collapse"
+					href="#collapse-users-gear"
+					role="button"
+					aria-expanded="false"
+					aria-controls="collapse-users-gear">
+					<i class="fa-solid fa-users-gear" style="font-size: 3rem"></i>
+				</div>
+				<div class="title fw-bold">Enhance Personal Productivity</div>
+				<div class="collapse" id="collapse-users-gear">
+					<div class="description" style="text-align: justify">
+						A clean and organized environment fosters focus and creativity, leading to increased productivity in daily tasks and work.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="d-flex flex-column align-items-center">
+				<div
+					class="icon-container"
+					style="width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center"
+					onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)';"
+					onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';"
+					data-bs-toggle="collapse"
+					href="#collapse-head-side-mask"
+					role="button"
+					aria-expanded="false"
+					aria-controls="collapse-head-side-mask">
+					<i class="fa-solid fa-head-side-mask" style="font-size: 3rem"></i>
+				</div>
+				<div class="title fw-bold">Reduce Allergy Symptoms</div>
+				<div class="collapse" id="collapse-head-side-mask">
+					<div class="description" style="text-align: justify">
+						Regular cleaning reduces dust and allergens, providing relief for those with respiratory conditions.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="d-flex flex-column align-items-center">
+				<div
+					class="icon-container"
+					style="width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center"
+					onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)';"
+					onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';"
+					data-bs-toggle="collapse"
+					href="#collapse-bug-slash"
+					role="button"
+					aria-expanded="false"
+					aria-controls="collapse-bug-slash">
+					<i class="fa-solid fa-bug-slash" style="font-size: 3rem"></i>
+				</div>
+				<div class="title fw-bold">Deter Pests</div>
+				<div class="collapse" id="collapse-bug-slash">
+					<div class="description" style="text-align: justify">
+						Cleanliness removes food sources and hiding spots, discouraging pests like rodents and insects from infesting your home.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="d-flex flex-column align-items-center">
+				<div
+					class="icon-container"
+					style="width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center"
+					onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)';"
+					onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';"
+					data-bs-toggle="collapse"
+					href="#collapse-magnifying-glass"
+					role="button"
+					aria-expanded="false"
+					aria-controls="collapse-magnifying-glass">
+					<i class="fa-solid fa-magnifying-glass" style="font-size: 3rem"></i>
+				</div>
+				<div class="title fw-bold">Find Items Quickly</div>
+				<div class="collapse" id="collapse-magnifying-glass">
+					<div class="description" style="text-align: justify">
+						Organized spaces save time and frustration by making it easier to locate belongings when needed.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="d-flex flex-column align-items-center">
+				<div
+					class="icon-container"
+					style="width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center"
+					onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)';"
+					onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';"
+					data-bs-toggle="collapse"
+					href="#collapse-money-bill-trend-up"
+					role="button"
+					aria-expanded="false"
+					aria-controls="collapse-money-bill-trend-up">
+					<i class="fa-solid fa-money-bill-trend-up" style="font-size: 3rem"></i>
+				</div>
+				<div class="title fw-bold">Boost Home's Value</div>
+				<div class="collapse" id="collapse-money-bill-trend-up">
+					<div class="description" style="text-align: justify">
+						Well-maintained homes with clean, appealing interiors command higher resale values in the real estate market.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="d-flex flex-column align-items-center">
+				<div
+					class="icon-container"
+					style="width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center"
+					onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)';"
+					onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';"
+					data-bs-toggle="collapse"
+					href="#collapse-hand-holding-dollar"
+					role="button"
+					aria-expanded="false"
+					aria-controls="collapse-hand-holding-dollar">
+					<i class="fa-solid fa-hand-holding-dollar" style="font-size: 3rem"></i>
+				</div>
+				<div class="title fw-bold">Sell Home Faster</div>
+				<div class="collapse" id="collapse-hand-holding-dollar">
+					<div class="description" style="text-align: justify">
+						A clean, tidy home enhances curb appeal and makes a positive impression on potential buyers, speeding up the selling process.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Services container -->
+<div class="container" style="margin-top: 2rem">
+	<h1 class="text-center" style="margin-top: 2rem">
+		<strong><em>Offered Services</em></strong>
+	</h1>
+	<div class="row row-cols-1 row-cols-md-2">
+		<div class="col mb-3 mb-md-0" style="text-align: justify">
+			<p>
+				<strong>General Cleaning:</strong> Our General Cleaning service encompasses the essential tasks of dusting, sweeping, mopping, and vacuuming,
+				ensuring a fresh and tidy space for everyday living.
+			</p>
+		</div>
+		<div class="col mb-3 mb-md-0" style="text-align: justify">
+			<p>
+				<strong>Deep Cleaning:</strong> Dive deeper into cleanliness with our Deep Cleaning service, which includes everything from General Cleaning to
+				meticulous attention to detail, such as cleaning inside cabinets, kitchen appliances, and removing stains from crockery, pots, and pans, leaving
+				your home immaculate.
+			</p>
+		</div>
+		<div class="col mb-3 mb-md-0" style="text-align: justify">
+			<p>
+				<strong>Post-Construction Cleaning:</strong> Following a construction project, our Post-Construction Cleaning service efficiently removes
+				debris, dust, and grime, restoring your space to its pristine condition, ready for occupancy.
+			</p>
+		</div>
+		<div class="col mb-3 mb-md-0" style="text-align: justify">
+			<p>
+				<strong>Additional Services:</strong> Beyond standard cleaning, our Additional Services provide specialized care, including shampooing and steam
+				cleaning for mattresses, upholstery, carpets, and curtains, ensuring every aspect of your home receives the attention it deserves.
+			</p>
+		</div>
+	</div>
+</div>
+
+<!-- Form container -->
+<div class="container-fluid">
+	<div class="container" style="margin-top: 1rem; margin-bottom: 2rem; padding: 2rem; border-radius: 1rem; border: 0.15rem solid #4c4c4c">
+		<h2 style="text-align: center; padding-bottom: 1rem">Request a Service</h2>
+		<form action="{{ url_for('home') }}" method="POST">
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label for="full_name" class="form-label">Full Name*</label>
+					<input type="text" class="form-control" id="full_name" name="full_name" required />
+				</div>
+				<div class="col-md-6 mb-3">
+					<label for="mobile_number" class="form-label">Mobile Number*</label>
+					<input
+						type="tel"
+						class="form-control"
+						id="mobile_number"
+						name="mobile_number"
+						pattern="\d{11}"
+						required
+						title="Mobile number should be 11 digits long." />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label for="street_address" class="form-label">Street Address*</label>
+					<input type="text" class="form-control" id="street_address" name="street_address" required />
+				</div>
+				<div class="col-md-6 mb-3">
+					<label for="city" class="form-label">City*</label>
+					<input type="text" class="form-control" id="city" name="city" required />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label for="room_size" class="form-label">Room Size* (in square meters)</label>
+					<input type="number" class="form-control" id="room_size" name="room_size" required min="0" step="1.00" />
+				</div>
+				<div class="col-md-6">
+					<label class="form-label">Type of Service*</label>
+					<div class="row">
+						<div class="col-6">
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="type_of_service" id="general_cleaning" value="General Cleaning" required />
+								<label class="form-check-label" for="general_cleaning">General Cleaning</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="type_of_service" id="deep_cleaning" value="Deep Cleaning" />
+								<label class="form-check-label" for="deep_cleaning">Deep Cleaning</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="type_of_service" id="move_in_out_cleaning" value="Move In/Out Cleaning" />
+								<label class="form-check-label" for="move_in_out_cleaning">Move In/Out Cleaning</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-check">
+								<input
+									class="form-check-input"
+									type="radio"
+									name="type_of_service"
+									id="post_construction_cleaning"
+									value="Post Construction Cleaning" />
+								<label class="form-check-label" for="post_construction_cleaning">Post Construction Cleaning</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mb-3">
+				<label for="addl_services" class="form-label">Request Additional Services (optional)</label>
+				<input type="text" class="form-control" id="addl_services" name="addl_services" />
+			</div>
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label for="selected_date" class="form-label">Selected Date*</label>
+					<input type="date" class="form-control" id="selected_date" name="selected_date" required />
+				</div>
+				<div class="col-md-6 mb-3">
+					<label for="selected_time" class="form-label">Selected Time*</label>
+					<input type="time" class="form-control" id="selected_time" name="selected_time" required />
+				</div>
+			</div>
+			<div class="mb-3">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-- Before & After container -->
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 col-lg-3 text-center">
+			<img
+				src="../static/assets/ba1.jpg"
+				class="img-fluid"
+				alt="Image 1"
+				style="margin-bottom: 0.5rem; margin-top: 0.5rem; box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)" />
+		</div>
+		<div class="col-md-6 col-lg-3 text-center">
+			<img
+				src="../static/assets/ba2.jpg"
+				class="img-fluid"
+				alt="Image 2"
+				style="margin-bottom: 0.5rem; margin-top: 0.5rem; box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)" />
+		</div>
+		<div class="col-md-6 col-lg-3 text-center">
+			<img
+				src="../static/assets/ba3.jpg"
+				class="img-fluid"
+				alt="Image 3"
+				style="margin-bottom: 0.5rem; margin-top: 0.5rem; box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)" />
+		</div>
+		<div class="col-md-6 col-lg-3 text-center">
+			<img
+				src="../static/assets/ba4.jpg"
+				class="img-fluid"
+				alt="Image 4"
+				style="margin-bottom: 0.5rem; margin-top: 0.5rem; box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)" />
+		</div>
+	</div>
+</div>
+
+<!-- Reviews container -->
+<div class="container">
+	<div class="row">
+		<div class="col text-center">
+			<img
+				src="../static/assets/reviews.jpg"
+				class="img-fluid"
+				alt="Client Review Image"
+				style="margin-bottom: 0.5rem; margin-top: 0.5rem; box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.5)" />
+		</div>
+	</div>
+</div>
+
 {% endblock %}

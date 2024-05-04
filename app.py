@@ -1,5 +1,4 @@
 # app.py - do not remove this comment
-
 import os
 from flask import (
     Flask,
@@ -18,7 +17,8 @@ from flask_login import (
     current_user,
 )
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User
+from models import db, User, Service
+from datetime import datetime
 import logging
 
 # Set up logging
@@ -38,12 +38,12 @@ login_manager.init_app(app)
 login_manager.session_protection = "strong"
 login_manager.login_view = "index"
 
+
 # Unauthorized handler
 @login_manager.unauthorized_handler
 def unauthorized_callback():
     flash("Please login first!", category="error")
-    return redirect(url_for('index'))
-
+    return redirect(url_for("index"))
 
 
 @login_manager.user_loader
@@ -91,7 +91,7 @@ def validate_password(password, confirmpassword):
 def index():
     if current_user.is_authenticated:
         return redirect(url_for("home"))
-    return render_template("login.html")
+    return render_template("login.html", now=datetime.now())
 
 
 @app.route("/login", methods=["POST"])
@@ -112,9 +112,11 @@ def logout():
     return redirect(url_for("index"))
 
 
-@app.route("/forgotpassword")
+@app.route("/forgotpassword", methods=["GET", "POST"])
 def forgotpassword():
-    return render_template("forgotpassword.html")
+    if request.method == "POST":
+        return redirect(url_for("index"))
+    return render_template("forgotpassword.html", now=datetime.now())
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -131,31 +133,51 @@ def signup():
                 return redirect(url_for("index"))
             else:
                 return redirect(url_for("signup"))
-    return render_template("signup.html")
+    return render_template("signup.html", now=datetime.now())
 
 
-@app.route("/home")
+@app.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
-    return render_template("home.html")
+    if request.method == "POST":
+        full_name = request.form["full_name"]
+        mobile_number = request.form["mobile_number"]
+        street_address = request.form["street_address"]
+        city = request.form["city"]
+        room_size = request.form["room_size"]
+        type_of_service = request.form["type_of_service"]
+        addl_services = request.form.get("addl_services", "")
+        selected_date = request.form["selected_date"]
+        selected_time = request.form["selected_time"]
+
+        new_service = Service(
+            user_id=current_user.id,
+            full_name=full_name,
+            mobile_number=mobile_number,
+            street_address=street_address,
+            city=city,
+            room_size=room_size,
+            type_of_service=type_of_service,
+            addl_services=addl_services,
+            selected_date=selected_date,
+            selected_time=selected_time,
+        )
+        db.session.add(new_service)
+        db.session.commit()
+        flash(
+            "Service request submitted successfully! Wait for confirmation in your email.",
+            category="success",
+        )
+        return redirect(url_for("home"))
+
+    return render_template("home.html", now=datetime.now())
 
 
-@app.route("/services")
+@app.route("/bookings")
 @login_required
-def services():
-    return render_template("services.html")
-
-
-@app.route("/appointments")
-@login_required
-def appointments():
-    return render_template("appointments.html")
-
-
-@app.route("/reviews")
-@login_required
-def reviews():
-    return render_template("reviews.html")
+def bookings():
+    user_bookings = Service.query.filter_by(user_id=current_user.id).all()
+    return render_template("bookings.html", bookings=user_bookings, now=datetime.now())
 
 
 @app.after_request
