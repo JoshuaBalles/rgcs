@@ -1,5 +1,4 @@
-<!-- templates/base.html -->
-
+<!-- templates/base.html (do not remove this comment)-->
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -15,11 +14,6 @@
 			crossorigin="anonymous" />
 		<link
 			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css"
-			integrity="sha384-BY+fdrpOd3gfeRvTSMT+VUZmA728cfF9Z2G42xpaRkUGu2i3DyzpTURDo5A6CaLK"
-			crossorigin="anonymous" />
-		<link
-			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
 			integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd"
 			crossorigin="anonymous" />
@@ -31,10 +25,16 @@
 			<div class="container-fluid">
 				<div class="row align-items-center">
 					<div class="col d-flex justify-content-center align-items-center">
-						<img src="static/assets/brand.png" alt="Logo" class="d-inline-block align-middle" style="max-width: 45%; height: auto" />
+						<img src="static/assets/brand.png" alt="Logo" class="d-inline-block align-middle" style="max-width: 25%; height: auto" />
 					</div>
 					<div class="col d-flex justify-content-center">
-						<strong style="font-size: 1.5rem">Hello {{ current_user.firstname }}!</strong>
+						{% set current_hour = now.hour %} {% if current_hour < 12 %}
+						<strong style="font-size: 1.5rem">Good Morning!</strong>
+						{% elif current_hour < 18 %}
+						<strong style="font-size: 1.5rem">Good Afternoon!</strong>
+						{% else %}
+						<strong style="font-size: 1.5rem">Good Evening!</strong>
+						{% endif %}
 					</div>
 					<div class="col text-center d-none d-md-block">
 						<p class="mb-0">17/F Highstreet South Corp. Plaza Tower 2, BGC</p>
@@ -45,104 +45,74 @@
 		</nav>
 
 		<!-- Navbar 2-->
-		<nav class="navbar" style="background-color: #bfffff">
+		<nav class="navbar navbar-expand-md" style="background-color: #bfffff">
 			<div class="container-fluid">
-				<!-- Dropdown for smaller screens -->
-				<div class="row d-flex d-md-none justify-content-end">
-					<div class="col-12 d-flex justify-content-center">
-						<div class="dropdown">
-							<button
-								class="btn dropdown-toggle"
-								type="button"
-								id="dropdownMenuButton"
-								data-bs-toggle="dropdown"
-								aria-expanded="false"
-								style="background-color: transparent; border: none; color: inherit">
-								Menu
-							</button>
-							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-								<li>
-									<a class="dropdown-item" href="/home">Home</a>
-								</li>
-								<li>
-									<a class="dropdown-item" href="/services">Services</a>
-								</li>
-								<li>
-									<a class="dropdown-item" href="/appointments">Appointments</a>
-								</li>
-								<li>
-									<a class="dropdown-item" href="/reviews">Reviews</a>
-								</li>
-								<li>
-									<a class="dropdown-item" href="/logout">Logout</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<!-- Normal view for medium screens and up -->
-				<div class="row d-none d-md-flex" style="flex: 1">
-					<div class="col d-flex justify-content-center" style="flex: 1">
+				<div class="navbar-nav mx-auto">
+					<a class="nav-link" href="/home">
 						<button
 							class="btn"
-							onclick="location.href='/home';"
 							style="background-color: transparent; border: none; color: inherit; box-shadow: none"
 							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
 							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
 							Home
 						</button>
-					</div>
-					<div class="col d-flex justify-content-center" style="flex: 1">
+					</a>
+					<a class="nav-link" href="/bookings">
 						<button
 							class="btn"
-							onclick="location.href='/services';"
 							style="background-color: transparent; border: none; color: inherit; box-shadow: none"
 							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
 							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
-							Services
+							Bookings
 						</button>
-					</div>
-					<div class="col d-flex justify-content-center" style="flex: 1">
+					</a>
+					<a class="nav-link" href="/logout">
 						<button
 							class="btn"
-							onclick="location.href='/appointments';"
-							style="background-color: transparent; border: none; color: inherit; box-shadow: none"
-							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
-							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
-							Appointments
-						</button>
-					</div>
-					<div class="col d-flex justify-content-center" style="flex: 1">
-						<button
-							class="btn"
-							onclick="location.href='/reviews';"
-							style="background-color: transparent; border: none; color: inherit; box-shadow: none"
-							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
-							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
-							Reviews
-						</button>
-					</div>
-					<div class="col d-flex justify-content-center" style="flex: 1">
-						<button
-							class="btn"
-							onclick="location.href='/logout';"
 							style="background-color: transparent; border: none; color: inherit; box-shadow: none"
 							onmouseover="this.style.backgroundColor='#2ecce6'; this.style.color='white'; this.style.boxShadow='0rem 0rem 0.625rem rgba(0, 0, 0, 0.5)';"
 							onmouseout="this.style.backgroundColor='transparent'; this.style.color='inherit'; this.style.boxShadow='none';">
 							Logout
 						</button>
-					</div>
+					</a>
 				</div>
 			</div>
 		</nav>
 
 		<!-- Content Section -->
-		<div class="container">{% block content %}{% endblock %}</div>
+		<div class="container-fluid">{% block content %}{% endblock %}</div>
 
-		<!-- Bootstrap JavaScript Bundle CDN. Do not remove. -->
+		<!-- Footer section -->
+		<footer class="bg-dark text-white py-5" style="margin-top: auto">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<h5>Contact Us</h5>
+						<p>Address:<br />17/F Highstreet South Corporate Plaza Tower 2 26th St. corner 11th St. Bonifacio Global City, Taguig, Philippines</p>
+						<p>
+							<a href="https://www.facebook.com/mrstidycleans" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+							<a href="https://www.instagram.com/mrstidy_cleaningservices/" class="text-white"><i class="bi bi-instagram"></i></a>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<h5>&nbsp;</h5>
+						<!-- Adding an empty heading to maintain alignment -->
+						<p>
+							Phone:<br />Anna: 0977-064-0278 <br />
+							Adrian: 0981-015-0382
+						</p>
+						<p>Email: mrstidycleans@gmail.com</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<!-- Additional CDNs. Do not remove. -->
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
 			crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+		<script src="https://kit.fontawesome.com/0aec8ea5b0.js" crossorigin="anonymous"></script>
 	</body>
 </html>
