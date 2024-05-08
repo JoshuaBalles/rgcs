@@ -136,13 +136,6 @@ def logout():
     return redirect(url_for("index"))
 
 
-@app.route("/forgotpassword", methods=["GET", "POST"])
-def forgotpassword():
-    if request.method == "POST":
-        return redirect(url_for("index"))
-    return render_template("forgotpassword.html", now=datetime.now())
-
-
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
