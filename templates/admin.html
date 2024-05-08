@@ -1,11 +1,11 @@
-<!-- templates/admin.html -->
+<!-- templates/admin.html (do not remove this comment) -->
 {% extends 'admin_base.html' %} {% block title %}Mrs. Tidy - Home{% endblock %} {% block content %}
 
 <!-- Bookings table -->
-<div class="container" style="padding: 1rem; margin-top: 1rem">
-	<div class="text-center">
-		<h2>Bookings</h2>
-		<table class="table table-striped" style="text-align: right; font-size: 0.9rem;">
+<div class="text-center">
+	<h2>Bookings</h2>
+	<div class="table-responsive">
+		<table class="table table-striped" style="text-align: right; font-size: 0.9rem">
 			<thead>
 				<tr>
 					<th style="text-align: right"><a href="{{ url_for('admin', sort='id', order=sort_orders['id']) }}">Service ID</a></th>
@@ -62,15 +62,15 @@
 {% endif %} {% endfor %} {% endif %} {% endwith %}
 
 <!-- Booking Confirmation table -->
-<div class="container" style="width: 64rem; padding: 1rem; margin-bottom: 1rem">
-	<div class="text-center">
-		<h2>Booking Confirmation</h2>
-		<form action="{{ url_for('admin') }}" method="post" style="padding-bottom: 1rem">
-			<input type="text" name="service_id" placeholder="Enter Service ID" required />
-			<button type="submit" name="action" value="search">Search</button>
-		</form>
-		{% if service %}
-		<table class="table table-striped" style="font-size: 0.9rem;">
+<div class="text-center">
+	<h2>Booking Confirmation</h2>
+	<form action="{{ url_for('admin') }}" method="post" style="padding-bottom: 1rem">
+		<input type="text" name="service_id" placeholder="Enter Service ID" required />
+		<button type="submit" name="action" value="search">Search</button>
+	</form>
+	{% if service %}
+	<div class="table-responsive">
+		<table class="table table-striped" style="font-size: 0.9rem">
 			<tbody>
 				<tr>
 					<td class="text-end">Service ID:</td>
@@ -129,8 +129,8 @@
 				</tr>
 			</tbody>
 		</table>
-		{% endif %}
 	</div>
+	{% endif %}
 </div>
 
 {% endblock %}
