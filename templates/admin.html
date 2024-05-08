@@ -1,24 +1,39 @@
-<!-- templates/home.html (do not remove this comment)-->
+<!-- templates/admin.html -->
 {% extends 'admin_base.html' %} {% block title %}Mrs. Tidy - Home{% endblock %} {% block content %}
 
 <!-- Flash message -->
 {% with messages = get_flashed_messages(with_categories=True) %} {% if messages %} {% for category, message in messages %} {% if category == "error" %}
-<div class="alert alert-danger alter-dismissible fade show text-center" role="alert">
+<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
 	{{ message }}
 	<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 {% else %}
-<div class="alert alert-success alter-dismissible fade show text-center" role="alert">
+<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
 	{{ message }}
 	<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 {% endif %} {% endfor %} {% endif %} {% endwith %}
 
-
-
-test
-
-
-
+<div class="text-center">
+	<h2>Registered Users</h2>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th><a href="{{ url_for('.admin', sort='firstname', order=sort_orders['firstname']) }}">First Name</a></th>
+				<th><a href="{{ url_for('.admin', sort='lastname', order=sort_orders['lastname']) }}">Last Name</a></th>
+				<th><a href="{{ url_for('.admin', sort='email', order=sort_orders['email']) }}">Email</a></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+			<tr>
+				<td>{{ user.firstname }}</td>
+				<td>{{ user.lastname }}</td>
+				<td>{{ user.email }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
 
 {% endblock %}

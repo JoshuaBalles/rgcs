@@ -1,18 +1,21 @@
 # app.py - do not remove this comment
+import logging
 import os
-from flask import Flask, render_template, request, flash, redirect, url_for
+from datetime import datetime
+
+from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_login import (
     LoginManager,
+    current_user,
+    login_required,
     login_user,
     logout_user,
-    login_required,
-    current_user,
 )
-from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User, Service
-from datetime import datetime
 from flask_mail import Mail, Message
-import logging
+from sqlalchemy import asc, desc
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from models import Service, User, db
 
 # Set up logging
 logging.basicConfig(
@@ -106,7 +109,7 @@ def validate_password(password, confirmpassword):
 def index():
     if current_user.is_authenticated:
         # Redirect admin directly to admin page
-        if current_user.email.lower() == "zabimaruto@proton.me":
+        if current_user.email.lower() == "s626624622@gmail.com":
             return redirect(url_for("admin"))
         return redirect(url_for("home"))
     return render_template("login.html", now=datetime.now())
@@ -119,7 +122,7 @@ def login():
     user = authenticate_user(email, password)
     if user:
         # Redirect admin directly to admin page
-        if email.lower() == "zabimaruto@proton.me":
+        if email.lower() == "s626624622@gmail.com":
             return redirect(url_for("admin"))
         return redirect(url_for("home"))
     else:
@@ -158,7 +161,7 @@ def signup():
 @app.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
-    if current_user.email.lower() == "zabimaruto@proton.me":
+    if current_user.email.lower() == "s626624622@gmail.com":
         return redirect(url_for("admin"))
     if request.method == "POST":
         full_name = request.form["full_name"]
@@ -196,7 +199,7 @@ def home():
 @app.route("/bookings")
 @login_required
 def bookings():
-    if current_user.email.lower() == "zabimaruto@proton.me":
+    if current_user.email.lower() == "s626624622@gmail.com":
         return redirect(url_for("admin"))
     user_bookings = Service.query.filter_by(user_id=current_user.id).all()
     return render_template("bookings.html", bookings=user_bookings, now=datetime.now())
@@ -205,9 +208,31 @@ def bookings():
 @app.route("/admin")
 @login_required
 def admin():
-    if current_user.email.lower() != "zabimaruto@proton.me":
+    if current_user.email.lower() == "s626624622@gmail.com":
+        sort_by = request.args.get("sort", "firstname")
+        order = request.args.get("order", "asc")
+        if order == "asc":
+            users = (
+                User.query.filter(User.email != "s626624622@gmail.com")
+                .order_by(asc(sort_by))
+                .all()
+            )
+        else:
+            users = (
+                User.query.filter(User.email != "s626624622@gmail.com")
+                .order_by(desc(sort_by))
+                .all()
+            )
+        sort_orders = {
+            "firstname": "asc" if sort_by != "firstname" or order == "desc" else "desc",
+            "lastname": "asc" if sort_by != "lastname" or order == "desc" else "desc",
+            "email": "asc" if sort_by != "email" or order == "desc" else "desc",
+        }
+        return render_template(
+            "admin.html", users=users, sort_orders=sort_orders, now=datetime.now()
+        )
+    else:
         return redirect(url_for("home"))
-    return render_template("admin.html", now=datetime.now())
 
 
 @app.after_request
