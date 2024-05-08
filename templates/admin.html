@@ -1,0 +1,24 @@
+<!-- templates/home.html (do not remove this comment)-->
+{% extends 'admin_base.html' %} {% block title %}Mrs. Tidy - Home{% endblock %} {% block content %}
+
+<!-- Flash message -->
+{% with messages = get_flashed_messages(with_categories=True) %} {% if messages %} {% for category, message in messages %} {% if category == "error" %}
+<div class="alert alert-danger alter-dismissible fade show text-center" role="alert">
+	{{ message }}
+	<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissible fade show text-center" role="alert">
+	{{ message }}
+	<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endif %} {% endfor %} {% endif %} {% endwith %}
+
+
+
+test
+
+
+
+
+{% endblock %}

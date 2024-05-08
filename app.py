@@ -1,14 +1,6 @@
 # app.py - do not remove this comment
 import os
-from flask import (
-    Flask,
-    render_template,
-    request,
-    flash,
-    redirect,
-    url_for,
-    after_this_request,
-)
+from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_login import (
     LoginManager,
     login_user,
@@ -19,6 +11,7 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, User, Service
 from datetime import datetime
+from flask_mail import Mail, Message
 import logging
 
 # Set up logging
@@ -31,6 +24,15 @@ app.secret_key = os.environ.get("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
+
+# Email configuration
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
+app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_USERNAME")
+mail = Mail(app)
 
 # Configure login manager with enhanced session protection
 login_manager = LoginManager()
@@ -66,7 +68,20 @@ def insert_user(firstname, lastname, email, password):
     )
     db.session.add(new_user)
     db.session.commit()
+    send_registration_email(email, firstname)  # Send registration email
     return True
+
+
+def send_registration_email(email, firstname):
+    msg = Message(
+        "Welcome to Our Service",
+        sender=os.environ.get("MAIL_USERNAME"),
+        recipients=[email],
+    )
+    msg.body = (
+        f"Hi {firstname},\nWelcome to our service! We are glad to have you onboard."
+    )
+    mail.send(msg)
 
 
 def authenticate_user(email, password):
@@ -90,6 +105,9 @@ def validate_password(password, confirmpassword):
 @app.route("/login")
 def index():
     if current_user.is_authenticated:
+        # Redirect admin directly to admin page
+        if current_user.email.lower() == "zabimaruto@proton.me":
+            return redirect(url_for("admin"))
         return redirect(url_for("home"))
     return render_template("login.html", now=datetime.now())
 
@@ -100,6 +118,9 @@ def login():
     password = request.form["password"]
     user = authenticate_user(email, password)
     if user:
+        # Redirect admin directly to admin page
+        if email.lower() == "zabimaruto@proton.me":
+            return redirect(url_for("admin"))
         return redirect(url_for("home"))
     else:
         flash("Invalid email or password.", category="error")
@@ -131,14 +152,14 @@ def signup():
             if insert_user(firstname, lastname, email, password):
                 flash("Successfully Signed Up!", category="success")
                 return redirect(url_for("index"))
-            else:
-                return redirect(url_for("signup"))
     return render_template("signup.html", now=datetime.now())
 
 
 @app.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
+    if current_user.email.lower() == "zabimaruto@proton.me":
+        return redirect(url_for("admin"))
     if request.method == "POST":
         full_name = request.form["full_name"]
         mobile_number = request.form["mobile_number"]
@@ -169,15 +190,24 @@ def home():
             category="success",
         )
         return redirect(url_for("home"))
-
     return render_template("home.html", now=datetime.now())
 
 
 @app.route("/bookings")
 @login_required
 def bookings():
+    if current_user.email.lower() == "zabimaruto@proton.me":
+        return redirect(url_for("admin"))
     user_bookings = Service.query.filter_by(user_id=current_user.id).all()
     return render_template("bookings.html", bookings=user_bookings, now=datetime.now())
+
+
+@app.route("/admin")
+@login_required
+def admin():
+    if current_user.email.lower() != "zabimaruto@proton.me":
+        return redirect(url_for("home"))
+    return render_template("admin.html", now=datetime.now())
 
 
 @app.after_request
