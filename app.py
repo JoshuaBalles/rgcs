@@ -32,9 +32,9 @@ db.init_app(app)
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
-app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
-app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_USERNAME")
+app.config["MAIL_USERNAME"] = os.environ.get("ADMIN_MAIL")
+app.config["MAIL_PASSWORD"] = os.environ.get("ADMIN_TOKEN")
+app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("ADMIN_MAIL")
 mail = Mail(app)
 
 # Configure login manager with enhanced session protection
@@ -78,7 +78,7 @@ def insert_user(firstname, lastname, email, password):
 def send_registration_email(email, firstname):
     msg = Message(
         "Welcome to Our Service",
-        sender=os.environ.get("MAIL_USERNAME"),
+        sender=os.environ.get("ADMIN_MAIL"),
         recipients=[email],
     )
     msg.body = (
@@ -109,7 +109,7 @@ def validate_password(password, confirmpassword):
 def index():
     if current_user.is_authenticated:
         # Redirect admin directly to admin page
-        if current_user.email.lower() == "s626624622@gmail.com":
+        if current_user.email.lower() == os.environ.get("ADMIN_MAIL").lower():
             return redirect(url_for("admin"))
         return redirect(url_for("home"))
     return render_template("login.html", now=datetime.now())
@@ -122,7 +122,7 @@ def login():
     user = authenticate_user(email, password)
     if user:
         # Redirect admin directly to admin page
-        if email.lower() == "s626624622@gmail.com":
+        if email.lower() == os.environ.get("ADMIN_MAIL").lower():
             return redirect(url_for("admin"))
         return redirect(url_for("home"))
     else:
@@ -164,7 +164,7 @@ from flask import current_app
 @app.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
-    if current_user.email.lower() == "s626624622@gmail.com":
+    if current_user.email.lower() == os.environ.get("ADMIN_MAIL").lower():
         return redirect(url_for("admin"))
     if request.method == "POST":
         full_name = request.form["full_name"]
@@ -194,7 +194,7 @@ def home():
         db.session.commit()
 
         # Send email to admin
-        admin_email = "s626624622@gmail.com"
+        admin_email = os.environ.get("ADMIN_MAIL").lower()
         subject = f"New Service Request for {selected_date}, {selected_time}"
         body = (
             f"Email: {email}\n"
@@ -227,7 +227,7 @@ def send_email(recipient, subject, body):
 @app.route("/bookings")
 @login_required
 def bookings():
-    if current_user.email.lower() == "s626624622@gmail.com":
+    if current_user.email.lower() == os.environ.get("ADMIN_MAIL").lower():
         return redirect(url_for("admin"))
     user_bookings = Service.query.filter_by(user_id=current_user.id).all()
     return render_template("bookings.html", bookings=user_bookings, now=datetime.now())
@@ -236,7 +236,7 @@ def bookings():
 @app.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin():
-    if current_user.email.lower() == "s626624622@gmail.com":
+    if current_user.email.lower() == os.environ.get("ADMIN_MAIL").lower():
         service = None
         if request.method == "POST":
             action = request.form.get("action")
