@@ -1,6 +1,53 @@
 <!-- templates/admin.html -->
 {% extends 'admin_base.html' %} {% block title %}Mrs. Tidy - Home{% endblock %} {% block content %}
 
+<!-- Bookings table -->
+<div class="container" style="padding: 1rem; margin-top: 1rem">
+	<div class="text-center">
+		<h2>Bookings</h2>
+		<table class="table table-striped" style="text-align: right; font-size: 0.9rem;">
+			<thead>
+				<tr>
+					<th style="text-align: right"><a href="{{ url_for('admin', sort='id', order=sort_orders['id']) }}">Service ID</a></th>
+					<th style="text-align: right">Email</th>
+					<th style="text-align: right">Full Name</th>
+					<th style="text-align: right">Mobile Number</th>
+					<th style="text-align: right">Street Address</th>
+					<th style="text-align: right">City</th>
+					<th style="text-align: right">Room Size</th>
+					<th style="text-align: right">Type of Service</th>
+					<th style="text-align: right">Additional Services</th>
+					<th style="text-align: right">
+						<a href="{{ url_for('admin', sort='selected_date', order=sort_orders['selected_date']) }}">Selected Date</a>
+					</th>
+					<th style="text-align: right">Selected Time</th>
+					<th style="text-align: right">Confirmed</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for booking in bookings %}
+				<tr>
+					<td style="text-align: right">{{ booking.id }}</td>
+					<td style="text-align: right">{{ booking.user.email }}</td>
+					<td style="text-align: right">{{ booking.full_name }}</td>
+					<td style="text-align: right">{{ booking.mobile_number }}</td>
+					<td style="text-align: right">{{ booking.street_address }}</td>
+					<td style="text-align: right">{{ booking.city }}</td>
+					<td style="text-align: right">{{ booking.room_size }}</td>
+					<td style="text-align: right">{{ booking.type_of_service }}</td>
+					<td style="text-align: right">{{ booking.addl_services }}</td>
+					<td style="text-align: right">{{ booking.selected_date }}</td>
+					<td style="text-align: right">{{ booking.selected_time }}</td>
+					<td style="text-align: right; color: {% if booking.confirmed %}green{% else %}red{% endif %};">
+						{% if booking.confirmed %}Yes{% else %}No{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
 <!-- Flash message -->
 {% with messages = get_flashed_messages(with_categories=True) %} {% if messages %} {% for category, message in messages %} {% if category == "error" %}
 <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
@@ -14,26 +61,76 @@
 </div>
 {% endif %} {% endfor %} {% endif %} {% endwith %}
 
-<div class="text-center">
-	<h2>Registered Users</h2>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th><a href="{{ url_for('.admin', sort='firstname', order=sort_orders['firstname']) }}">First Name</a></th>
-				<th><a href="{{ url_for('.admin', sort='lastname', order=sort_orders['lastname']) }}">Last Name</a></th>
-				<th><a href="{{ url_for('.admin', sort='email', order=sort_orders['email']) }}">Email</a></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for user in users %}
-			<tr>
-				<td>{{ user.firstname }}</td>
-				<td>{{ user.lastname }}</td>
-				<td>{{ user.email }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+<!-- Booking Confirmation table -->
+<div class="container" style="width: 64rem; padding: 1rem; margin-bottom: 1rem">
+	<div class="text-center">
+		<h2>Booking Confirmation</h2>
+		<form action="{{ url_for('admin') }}" method="post" style="padding-bottom: 1rem">
+			<input type="text" name="service_id" placeholder="Enter Service ID" required />
+			<button type="submit" name="action" value="search">Search</button>
+		</form>
+		{% if service %}
+		<table class="table table-striped" style="font-size: 0.9rem;">
+			<tbody>
+				<tr>
+					<td class="text-end">Service ID:</td>
+					<td>{{ service.id }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">Email:</td>
+					<td>{{ service.user.email }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">Full Name:</td>
+					<td>{{ service.full_name }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">Mobile Number:</td>
+					<td>{{ service.mobile_number }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">Street Address:</td>
+					<td>{{ service.street_address }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">City:</td>
+					<td>{{ service.city }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">Room Size:</td>
+					<td>{{ service.room_size }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">Type of Service:</td>
+					<td>{{ service.type_of_service }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">Additional Services:</td>
+					<td>{{ service.addl_services }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">Selected Date:</td>
+					<td>{{ service.selected_date }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">Selected Time:</td>
+					<td>{{ service.selected_time }}</td>
+				</tr>
+				<tr>
+					<td class="text-end">Confirmed:</td>
+					<td>
+						<form action="{{ url_for('admin') }}" method="post">
+							<label><input type="radio" name="confirmed" value="yes" {% if service.confirmed %}checked{% endif %} /> Yes</label>
+							<label><input type="radio" name="confirmed" value="no" {% if not service.confirmed %}checked{% endif %} /> No</label>
+							<input type="hidden" name="service_id" value="{{ service.id }}" />
+							<button type="submit" name="action" value="update">Update</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		{% endif %}
+	</div>
 </div>
 
 {% endblock %}

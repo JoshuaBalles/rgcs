@@ -158,6 +158,9 @@ def signup():
     return render_template("signup.html", now=datetime.now())
 
 
+from flask import current_app
+
+
 @app.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
@@ -165,6 +168,7 @@ def home():
         return redirect(url_for("admin"))
     if request.method == "POST":
         full_name = request.form["full_name"]
+        email = current_user.email
         mobile_number = request.form["mobile_number"]
         street_address = request.form["street_address"]
         city = request.form["city"]
@@ -188,12 +192,36 @@ def home():
         )
         db.session.add(new_service)
         db.session.commit()
+
+        # Send email to admin
+        admin_email = "s626624622@gmail.com"
+        subject = f"New Service Request for {selected_date}, {selected_time}"
+        body = (
+            f"Email: {email}\n"
+            f"Full Name: {full_name}\n"
+            f"Mobile Number: {mobile_number}\n"
+            f"Street Address: {street_address}\n"
+            f"City: {city}\n"
+            f"Room Size: {room_size}\n"
+            f"Type of Service: {type_of_service}\n"
+            f"Additional Services: {addl_services}\n"
+            f"Selected Date: {selected_date}\n"
+            f"Selected Time: {selected_time}\n"
+        )
+        send_email(admin_email, subject, body)
+
         flash(
-            "Service request submitted successfully! Wait for confirmation in your email.",
+            "Service request submitted successfully! Please wait for your request to be reviewed and confirmed.",
             category="success",
         )
         return redirect(url_for("home"))
     return render_template("home.html", now=datetime.now())
+
+
+def send_email(recipient, subject, body):
+    msg = Message(subject, recipients=[recipient])
+    msg.body = body
+    mail.send(msg)
 
 
 @app.route("/bookings")
@@ -205,31 +233,58 @@ def bookings():
     return render_template("bookings.html", bookings=user_bookings, now=datetime.now())
 
 
-@app.route("/admin")
+@app.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin():
     if current_user.email.lower() == "s626624622@gmail.com":
-        sort_by = request.args.get("sort", "firstname")
+        service = None
+        if request.method == "POST":
+            action = request.form.get("action")
+            service_id = request.form.get("service_id")
+            if action == "search":
+                service = Service.query.filter_by(id=int(service_id)).first()
+                if not service:
+                    flash(f"Service ID {service_id} not found.", category="error")
+            elif action == "update":
+                confirmed_value = request.form.get("confirmed") == "yes"
+                service = Service.query.filter_by(id=int(service_id)).first()
+                if service:
+                    service.confirmed = confirmed_value
+                    db.session.commit()
+                    flash(f"Booking #{service_id} updated.", category="success")
+                else:
+                    flash(f"Service ID {service_id} not found.", category="error")
+
+        sort_by = request.args.get("sort", "id")
         order = request.args.get("order", "asc")
-        if order == "asc":
-            users = (
-                User.query.filter(User.email != "s626624622@gmail.com")
-                .order_by(asc(sort_by))
-                .all()
-            )
+        if sort_by == "id":
+            if order == "asc":
+                bookings = Service.query.order_by(asc(Service.id)).all()
+            else:
+                bookings = Service.query.order_by(desc(Service.id)).all()
+        elif sort_by == "selected_date":
+            if order == "asc":
+                bookings = Service.query.order_by(asc(Service.selected_date)).all()
+            else:
+                bookings = Service.query.order_by(desc(Service.selected_date)).all()
         else:
-            users = (
-                User.query.filter(User.email != "s626624622@gmail.com")
-                .order_by(desc(sort_by))
-                .all()
-            )
+            bookings = Service.query.order_by(
+                desc(Service.selected_date), desc(Service.selected_time)
+            ).all()
+
         sort_orders = {
-            "firstname": "asc" if sort_by != "firstname" or order == "desc" else "desc",
-            "lastname": "asc" if sort_by != "lastname" or order == "desc" else "desc",
-            "email": "asc" if sort_by != "email" or order == "desc" else "desc",
+            "id": "asc" if sort_by != "id" or order == "desc" else "desc",
+            "selected_date": (
+                "asc" if sort_by != "selected_date" or order == "desc" else "desc"
+            ),
         }
+
         return render_template(
-            "admin.html", users=users, sort_orders=sort_orders, now=datetime.now()
+            "admin.html",
+            sort_orders=sort_orders,
+            bookings=bookings,
+            service=service,
+            now=datetime.now(),
         )
     else:
         return redirect(url_for("home"))
